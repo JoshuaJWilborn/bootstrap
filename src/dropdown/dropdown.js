@@ -99,13 +99,18 @@ angular.module('ui.bootstrap.dropdown', ['ui.bootstrap.multiMap', 'ui.bootstrap.
       return;
     }
 
-    var dropdownElement = openScope.getDropdownElement();
-    if (evt && openScope.getAutoClose() === 'outsideClick' &&
-      dropdownElement && dropdownElement[0].contains(evt.target)) {
-      return;
+    var dropdownElement = openScope.getDropdownElement(), noFocus;
+
+    if (evt && openScope.getAutoClose() === 'outsideClick') {
+        if (dropdownElement && dropdownElement[0].contains(evt.target)) {
+           return;
+        } else {
+            // Close dropdown without changing focus;
+            noFocus = true;
+        }
     }
 
-    openScope.focusToggleElement();
+    !noFocus && openScope.focusToggleElement();
     openScope.isOpen = false;
 
     if (!$rootScope.$$phase) {
